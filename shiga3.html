@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予防医療推奨項目リスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #2C3E50;
+        }
+        form {
+            background-color: #ECF0F1;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="number"],
+        select,
+        button,
+        input[type="text"],
+        textarea {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+        .checkbox-group label {
+            font-weight: normal;
+        }
+        button {
+            background-color: #2980B9;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #3498DB;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #BDC3C7;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #34495E;
+            color: white;
+        }
+        td {
+            background-color: #FDFEFE;
+        }
+        .highlight {
+            background-color: #FFFF99; /* 黄色 */
+        }
+    </style>
+</head>
+<body>
+    <h1>予防医療推奨項目リスト</h1>
+    <form id="inputForm">
+        <label for="age">年齢:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="gender">性別:</label>
+        <select id="gender" name="gender" required>
+            <option value="male">男性</option>
+            <option value="female">女性</option>
+        </select>
+        
+        <label for="smoking">喫煙歴:</label>
+        <select id="smoking" name="smoking" required>
+            <option value="none">なし</option>
+            <option value="current">現在喫煙中</option>
+            <option value="former">過去に喫煙</option>
+        </select>
+
+        <label for="familyHistory">家族歴:</label>
+        <div class="checkbox-group" id="familyHistory">
+            <label><input type="checkbox" value="がん"> がん</label>
+            <label><input type="checkbox" value="心血管疾患"> 心血管疾患</label>
+            <label><input type="checkbox" value="糖尿病"> 糖尿病</label>
+            <label><input type="checkbox" value="いずれも該当しない"> いずれも該当しない</label>
+        </div>
+
+        <label for="medicalHistory">既往歴:</label>
+        <div class="checkbox-group" id="medicalHistory">
+            <label><input type="checkbox" value="がん"> がん</label>
+            <label><input type="checkbox" value="心血管疾患"> 心血管疾患</label>
+            <label><input type="checkbox" value="糖尿病"> 糖尿病</label>
+            <label><input type="checkbox" value="高血圧"> 高血圧</label>
+            <label><input type="checkbox" value="慢性呼吸器疾患"> 慢性呼吸器疾患</label>
+            <label><input type="checkbox" value="いずれも該当しない"> いずれも該当しない</label>
+        </div>
+
+        <label for="physicalActivity">身体活動レベル:</label>
+        <select id="physicalActivity" name="physicalActivity" required>
+            <option value="low">低い</option>
+            <option value="moderate">中程度</option>
+            <option value="high">高い</option>
+        </select>
+
+        <label for="alcoholConsumption">アルコール消費:</label>
+        <select id="alcoholConsumption" name="alcoholConsumption" required>
+            <option value="none">飲まない</option>
+            <option value="moderate">適度に飲む</option>
+            <option value="heavy">大量に飲む</option>
+        </select>
+
+        <label for="vaccinationHistory">ワクチン接種歴:</label>
+        <div class="checkbox-group" id="vaccinationHistory">
+            <label><input type="checkbox" value="インフルエンザ"> インフルエンザ</label>
+            <label><input type="checkbox" value="破傷風"> 破傷風</label>
+            <label><input type="checkbox" value="B型肝炎"> B型肝炎</label>
+            <label><input type="checkbox" value="HPV"> HPV</label>
+            <label><input type="checkbox" value="肺炎球菌"> 肺炎球菌</label>
+            <label><input type="checkbox" value="帯状疱疹"> 帯状疱疹</label>
+            <label><input type="checkbox" value="いずれも該当しない"> いずれも該当しない</label>
+        </div>
+
+        <label for="pregnancyIntentions">妊娠希望:</label>
+        <select id="pregnancyIntentions" name="pregnancyIntentions" required>
+            <option value="yes">はい</option>
+            <option value="no">いいえ</option>
+        </select>
+
+        <label for="occupation">職業:</label>
+        <div class="checkbox-group" id="occupation">
+            <label><input type="checkbox" value="医療従事者"> 医療従事者</label>
+            <label><input type="checkbox" value="化学物質に触れる仕事"> 化学物質に触れる仕事</label>
+            <label><input type="checkbox" value="長時間の座位労働"> 長時間の座位労働</label>
+            <label><input type="checkbox" value="肉体労働"> 肉体労働</label>
+            <label><input type="checkbox" value="いずれも該当しない"> いずれも該当しない</label>
+        </div>
+
+        <button type="button" onclick="generateList()">リストを生成</button>
+    </form>
+    
+    <div id="result">
+        <!-- 結果がここに表示されます -->
+    </div>
+    
+    <script>
+        function generateList() {
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const smoking = document.getElementById('smoking').value;
+
+            const familyHistory = Array.from(document.querySelectorAll('#familyHistory input:checked')).map(cb => cb.value);
+            const medicalHistory = Array.from(document.querySelectorAll('#medicalHistory input:checked')).map(cb => cb.value);
+            const physicalActivity = document.getElementById('physicalActivity').value;
+            const alcoholConsumption = document.getElementById('alcoholConsumption').value;
+            const vaccinationHistory = Array.from(document.querySelectorAll('#vaccinationHistory input:checked')).map(cb => cb.value);
+            const pregnancyIntentions = document.getElementById('pregnancyIntentions').value;
+            const occupation = Array.from(document.querySelectorAll('#occupation input:checked')).map(cb => cb.value);
+
+            let results = {
+                "悪性腫瘍スクリーニング": [],
+                "その他のスクリーニング・カウンセリング・予防的投与": [],
+                "ワクチン": []
+            };
+
+            // 悪性腫瘍スクリーニング
+            if (age >= 45 && age <= 75) {
+                results["悪性腫瘍スクリーニング"].push('大腸癌: 下部消化管内視鏡（10年毎）または便潜血検査（毎年）');
+            }
+            if (age >= 50) {
+                results["悪性腫瘍スクリーニング"].push('胃癌: 上部消化管内視鏡（2-3年毎）または胃X線検査（1-3年毎）');
+            }
+            if (gender === 'female' && age >= 40 && age <= 74) {
+                results["悪性腫瘍スクリーニング"].push('乳癌: マンモグラフィー（2年毎）');
+            }
+            if (gender === 'female' && age >= 21 && age <= 65) {
+                results["悪性腫瘍スクリーニング"].push('子宮頸癌: 細胞診（2年毎）');
+            }
+            if (age >= 50 && age <= 80 && (smoking === 'current' || (smoking === 'former' && age - smoking <= 15))) {
+                results["悪性腫瘍スクリーニング"].push('肺癌: 低線量CT（毎年）');
+            }
+            if (gender === 'male' && age >= 50 && age <= 70) {
+                results["悪性腫瘍スクリーニング"].push('前立腺癌: PSA採血（必要に応じて）');
+            }
+
+            // その他のスクリーニング・カウンセリング・予防的投与
+            if (smoking !== 'none') {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('禁煙: 禁煙カウンセリング');
+            }
+            if (age >= 65 || (gender === 'female' && age >= 65) || (gender === 'male' && age >= 70)) {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('骨粗鬆症: DEXAによる骨密度測定（3割負担で約1400円）');
+            }
+            results["その他のスクリーニング・カウンセリング・予防的投与"].push('高血圧: 血圧測定（40歳未満は3-5年毎、40歳以上は毎年）');
+            if (age >= 65) {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('転倒予防: 転倒リスク問診（毎年）');
+            }
+            if (age >= 65 && age <= 75 && smoking !== 'none') {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('腹部大動脈瘤: 腹部超音波（1回のみ、3割負担で約1600円）');
+            }
+            if (age >= 35 && age <= 70 && (gender === 'male' || (gender === 'female' && age >= 50))) {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('糖尿病: 血糖検査（3年毎）');
+            }
+            results["その他のスクリーニング・カウンセリング・予防的投与"].push('脂質代謝異常症: 血液検査（5年毎）');
+            results["その他のスクリーニング・カウンセリング・予防的投与"].push('うつ病: PHQ2、PHQ-9');
+            results["その他のスクリーニング・カウンセリング・予防的投与"].push('不安症: スクリーニング');
+            if (age >= 40) {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('性感染症(淋菌、クラミジア): 尿検査');
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('性感染症(梅毒): 血液検査');
+            }
+            if (alcoholConsumption === 'heavy') {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('アルコール: スクリーニング');
+            }
+            if (physicalActivity === 'low') {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('肥満: 一般的な指導');
+            }
+            results["その他のスクリーニング・カウンセリング・予防的投与"].push('HCV感染: 血液検査');
+            if (pregnancyIntentions === 'yes') {
+                results["その他のスクリーニング・カウンセリング・予防的投与"].push('妊婦への葉酸: 予防内服');
+            }
+
+            // ワクチン
+            if (age >= 65 || (age >= 19 && age <= 64 && (gender === 'male' || smoking !== 'none'))) {
+                results["ワクチン"].push('肺炎球菌');
+            }
+            if (!vaccinationHistory.includes('インフルエンザ')) {
+                results["ワクチン"].push('インフルエンザ');
+            }
+            if (!vaccinationHistory.includes('破傷風')) {
+                results["ワクチン"].push('破傷風');
+            }
+            if (gender === 'female' && age >= 12 && age <= 26 && !vaccinationHistory.includes('HPV')) {
+                results["ワクチン"].push('HPV');
+            }
+            if (age >= 19 && age <= 64 && !vaccinationHistory.includes('B型肝炎')) {
+                results["ワクチン"].push('B型肝炎');
+            }
+            if (age >= 50 && !vaccinationHistory.includes('帯状疱疹')) {
+                results["ワクチン"].push('帯状疱疹');
+            }
+
+            // 結果をHTMLに変換
+            let resultHTML = '';
+            for (const category in results) {
+                if (results[category].length > 0) {
+                    resultHTML += `<h3>${category}</h3><table><thead><tr><th>項目</th><th>実施方法と頻度</th><th>実施済み</th><th>実施日</th></tr></thead><tbody>`;
+                    results[category].forEach(item => {
+                        resultHTML += `
+                            <tr>
+                                <td>${item.split(':')[0]}</td>
+                                <td>${item.split(':')[1]}</td>
+                                <td><input type="checkbox" onchange="highlightRow(this)"></td>
+                                <td><input type="date"></td>
+                            </tr>
+                        `;
+                    });
+                    resultHTML += '</tbody></table>';
+                }
+            }
+
+            document.getElementById('result').innerHTML = resultHTML;
+        }
+
+        function highlightRow(checkbox) {
+            const row = checkbox.closest('tr');
+            if (checkbox.checked) {
+                row.classList.remove('highlight');
+            } else {
+                row.classList.add('highlight');
+            }
+        }
+    </script>
+</body>
+</html>
